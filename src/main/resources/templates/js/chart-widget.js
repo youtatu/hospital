@@ -1384,13 +1384,6 @@
     stroke: {
       width: 0,
     },
-    fill: {
-      colors: [KohoAdminConfig.primary],
-      type: "gradient",
-      gradient: {
-        gradientToColors: [KohoAdminConfig.primary],
-      },
-    },
     series: [
       {
         name: "Process 1",
@@ -1421,9 +1414,7 @@
     yaxis: {
       max: 100,
     },
-    fill: {
-      opacity: 1,
-    },
+
   };
 
   var chartProgress1 = new ApexCharts(
