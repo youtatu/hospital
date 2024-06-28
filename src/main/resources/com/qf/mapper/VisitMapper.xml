@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.mapper.VisitMapper">
+
+
+    <resultMap id="visit" type="com.qf.pojo.Visit">
+        <result column="id" property="id"/>
+        <result column="pid" property="pid"/>
+        <result column="did" property="did"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="status" property="status"/>
+        <result column="pfile" property="pfile"/>
+        <result column="dfile" property="dfile"/>
+
+        <association property="patient">
+            <result column="id" property="id"/>
+            <result column="pname" property="pname"/>
+            <result column="password" property="password"/>
+            <result column="sex" property="sex"/>
+            <result column="age" property="age"/>
+            <result column="address" property="address"/>
+            <result column="phone" property="phone"/>
+            <result column="pimage" property="pimage"/>
+        </association>
+
+        <association property="doctor">
+            <result column="id" property="id"/>
+            <result column="dname" property="dname"/>
+            <result column="password" property="password"/>
+            <result column="sex" property="sex"/>
+            <result column="age" property="age"/>
+            <result column="depart" property="depart"/>
+            <result column="phone" property="phone"/>
+            <result column="dimage" property="dimage"/>
+            <result column="hid" property="hid"/>
+        </association>
+    </resultMap>
+
+
+
+    <select id="queryNum" resultType="com.qf.pojo.CountNumber">
+        SELECT d.dname as name ,count(v.id) as count from doctor d,visit v where v.did=d.id
+        GROUP BY d.dname order by count desc
+    </select>
+
+    <select id="listMyVisit" resultType="com.qf.pojo.Visit" resultMap="visit">
+       select v.did, v.id,v.register_time, v.status,d.dname,d.phone,d.depart,d.hid,d.dimage
+        from visit v,doctor d,patient p
+            where p.id=v.pid and d.id=v.did and v.pid=#{userId}
+
+        order by v.id desc
+    </select>
+    <select id="listDocVisit" resultType="com.qf.pojo.Visit" resultMap="visit">
+       select v.did, v.id,v.register_time, v.status,d.dname,d.phone,d.depart,d.hid,d.dimage,p.pimage,p.pname,p.sex,p.age,p.address
+        from visit v,doctor d,patient p
+
+            where p.id=v.pid and d.id=v.did and v.did=#{userId}
+
+        order by v.id desc
+    </select>
+</mapper>
